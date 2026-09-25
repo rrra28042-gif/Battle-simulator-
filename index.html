@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legion Commander — Boids Simulation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Top-left HUD -->
+    <div id="ui">
+        <h1>Legion Command</h1>
+        <p><strong>Left-Click / Drag:</strong> Select &amp; move Legion</p>
+        <p><strong>Right-Click:</strong> Issue march order</p>
+        <p><strong>Formation buttons:</strong> Set formation for selected Legion</p>
+        <p id="mode-hint" class="mode-hint-pvp">⚔ Both legions are player-controlled.</p>
+    </div>
+
+    <!-- Top-center: Formation Bar -->
+    <div id="formation-bar">
+        <span id="formation-label">↑ Select a Legion first</span>
+        <div id="formation-btns">
+            <button class="formation-btn" id="btn-swarm" data-formation="SWARM">≈ Loose Swarm</button>
+            <button class="formation-btn" id="btn-line"  data-formation="LINE" >≡ Line Formation</button>
+            <button class="formation-btn" id="btn-grid"  data-formation="GRID" >⊞ Square Grid</button>
+        </div>
+    </div>
+
+    <!-- Top-right: Game Mode Toggle -->
+    <div id="mode-bar">
+        <span class="mode-bar-label">MODE</span>
+        <div id="mode-btns">
+            <button class="mode-btn active" id="btn-pvp" data-mode="PVP">⚔ Player vs Player</button>
+            <button class="mode-btn"        id="btn-pve" data-mode="PVE">🤖 vs Computer</button>
+        </div>
+    </div>
+
+    <!-- Restart Button (hidden until victory) -->
+    <button id="restart-btn">↺ Restart Match</button>
+
+    <!-- Bottom-right: Speed Control -->
+    <div id="speed-bar">
+        <span class="speed-bar-label">SPEED</span>
+        <div id="speed-btns">
+            <button class="speed-btn active" data-speed="1">1x</button>
+            <button class="speed-btn" data-speed="2">2x</button>
+            <button class="speed-btn" data-speed="4">4x</button>
+        </div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+    <script src="script.js"></script>
+</body>
+</html>

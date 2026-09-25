@@ -1,0 +1,259 @@
+/* ── Reset & Base ──────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body, html {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: #0f172a;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+#canvas { display: block; width: 100%; height: 100%; }
+
+/* ── Left HUD ──────────────────────────────────────────────────────────────── */
+#ui {
+    position: absolute;
+    top: 20px; left: 20px;
+    color: white;
+    background: rgba(15, 23, 42, 0.78);
+    padding: 16px 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    pointer-events: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+    z-index: 10;
+    max-width: 230px;
+}
+
+#ui h1 {
+    font-size: 18px; font-weight: 700;
+    margin-bottom: 10px;
+    background: linear-gradient(to right, #3b82f6, #ef4444);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+#ui p { font-size: 11px; color: #94a3b8; line-height: 1.85; }
+#ui strong { color: #cbd5e1; }
+
+#mode-hint {
+    margin-top: 10px !important;
+    padding-top: 9px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    font-weight: 600 !important;
+    font-size: 11px !important;
+    transition: color 0.3s;
+}
+
+.mode-hint-pvp { color: #64748b !important; }
+.mode-hint-pve { color: #3b82f6 !important; }
+
+/* ── Formation Bar (top-center) ────────────────────────────────────────────── */
+#formation-bar {
+    position: absolute;
+    top: 18px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(15,23,42,0.82);
+    padding: 11px 22px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.09);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    white-space: nowrap;
+    z-index: 10;
+    user-select: none;
+}
+
+#formation-label {
+    font-size: 11px; font-weight: 600;
+    color: #64748b;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    min-width: 120px;
+    transition: color 0.25s;
+}
+
+#formation-btns { display: flex; gap: 8px; }
+
+.formation-btn {
+    padding: 7px 14px;
+    border: 1px solid rgba(255,255,255,0.13);
+    background: rgba(255,255,255,0.04);
+    color: #64748b;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit; font-size: 12px; font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: background 0.16s, color 0.16s, border-color 0.16s, box-shadow 0.16s;
+    outline: none;
+}
+
+.formation-btn:hover {
+    background: rgba(255,255,255,0.09);
+    color: #e2e8f0;
+    border-color: rgba(255,255,255,0.22);
+}
+
+.formation-btn.active-a {
+    background: rgba(59,130,246,0.22); border-color: #3b82f6; color: #93c5fd;
+    box-shadow: 0 0 12px rgba(59,130,246,0.35);
+}
+
+.formation-btn.active-b {
+    background: rgba(239,68,68,0.22); border-color: #ef4444; color: #fca5a5;
+    box-shadow: 0 0 12px rgba(239,68,68,0.35);
+}
+
+/* ── Mode Bar (top-right) ──────────────────────────────────────────────────── */
+#mode-bar {
+    position: absolute;
+    top: 18px; right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(15,23,42,0.82);
+    padding: 11px 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.09);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    z-index: 10;
+    user-select: none;
+}
+
+.mode-bar-label {
+    font-size: 10px; font-weight: 700;
+    color: #334155;
+    letter-spacing: 0.1em; text-transform: uppercase;
+}
+
+#mode-btns { display: flex; gap: 6px; }
+
+.mode-btn {
+    padding: 7px 14px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.04);
+    color: #475569;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit; font-size: 12px; font-weight: 500;
+    transition: all 0.18s ease;
+    outline: none;
+}
+
+.mode-btn:hover {
+    background: rgba(255,255,255,0.08);
+    color: #94a3b8;
+    border-color: rgba(255,255,255,0.18);
+}
+
+.mode-btn.active {
+    background: rgba(99,102,241,0.22);
+    border-color: #6366f1;
+    color: #a5b4fc;
+    box-shadow: 0 0 12px rgba(99,102,241,0.30);
+}
+
+/* ── CPU Activity Pulse on mode button ─────────────────────────────────────── */
+.mode-btn#btn-pve.active {
+    background: rgba(251,191,36,0.15);
+    border-color: #fbbf24;
+    color: #fde68a;
+    box-shadow: 0 0 14px rgba(251,191,36,0.28);
+    animation: cpu-pulse 2s ease-in-out infinite;
+}
+
+@keyframes cpu-pulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(251,191,36,0.25); }
+    50%       { box-shadow: 0 0 22px rgba(251,191,36,0.55); }
+}
+
+/* ── Restart Button (bottom-center, hidden until victory) ──────────────────── */
+#restart-btn {
+    display: none;
+    position: absolute;
+    bottom: 38px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 13px 38px;
+    background: linear-gradient(135deg, #1e3a5f, #0f172a);
+    border: 1.5px solid rgba(99,102,241,0.55);
+    color: #c7d2fe;
+    font-family: inherit;
+    font-size: 15px; font-weight: 700;
+    letter-spacing: 0.04em;
+    border-radius: 12px;
+    cursor: pointer;
+    z-index: 20;
+    box-shadow: 0 0 24px rgba(99,102,241,0.35), 0 8px 32px rgba(0,0,0,0.6);
+    transition: all 0.2s ease;
+    animation: btn-appear 0.5s ease forwards;
+}
+
+#restart-btn:hover {
+    background: linear-gradient(135deg, #2d4a7a, #1e293b);
+    border-color: #818cf8;
+    color: #e0e7ff;
+    box-shadow: 0 0 32px rgba(99,102,241,0.55), 0 8px 32px rgba(0,0,0,0.6);
+    transform: translateX(-50%) translateY(-2px);
+}
+
+@keyframes btn-appear {
+    from { opacity: 0; transform: translateX(-50%) translateY(14px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+/* -- Speed Bar (bottom-right) ------------------------------------------------ */
+#speed-bar {
+    position: absolute;
+    bottom: 30px;
+    right: 32px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    pointer-events: auto;
+}
+
+.speed-bar-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #475569;
+}
+
+#speed-btns {
+    display: flex;
+    background: rgba(15,23,42,0.65);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 3px;
+    backdrop-filter: blur(8px);
+}
+
+.speed-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #94a3b8;
+    padding: 6px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.speed-btn:hover {
+    background: rgba(255,255,255,0.08);
+    color: #cbd5e1;
+}
+
+.speed-btn.active {
+    background: rgba(16,185,129,0.22);
+    border-color: #10b981;
+    color: #6ee7b7;
+    box-shadow: 0 0 12px rgba(16,185,129,0.30);
+}
